@@ -5,7 +5,7 @@
 ** counter events.
 **
 ** ===========================================================================
-** Copyright (C) 2021 Infineon Technologies AG. All rights reserved.
+** Copyright (C) 2022 Infineon Technologies AG. All rights reserved.
 ** ===========================================================================
 **
 ** ===========================================================================
@@ -35,12 +35,24 @@
 /*******************************************************************************
  * Macros
  *******************************************************************************/
+#ifdef TARGET_CYSBSYSKIT_DEV_01
 /* Pin number designated for LED RED */
 #define LED_RGB_RED (CYBSP_GPIOA0)
 /* Pin number designated for LED GREEN */
 #define LED_RGB_GREEN (CYBSP_GPIOA1)
 /* Pin number designated for LED BLUE */
 #define LED_RGB_BLUE (CYBSP_GPIOA2)
+#endif
+
+#ifdef TARGET_KIT_BGT60TR13C_EMBEDD
+/* Pin number designated for LED RED */
+#define LED_RGB_RED (CYBSP_LED_RGB_RED)
+/* Pin number designated for LED GREEN */
+#define LED_RGB_GREEN (CYBSP_LED_RGB_GREEN)
+/* Pin number designated for LED BLUE */
+#define LED_RGB_BLUE (CYBSP_LED_RGB_BLUE)
+#endif
+
 /* LED off */
 #define LED_STATE_OFF (0U)
 /* LED on */
@@ -199,7 +211,7 @@ void radar_led_task(cy_thread_arg_t arg)
         CY_ASSERT(0);
     }
 
-    result = cyhal_gpio_init(LED_RGB_GREEN, CYHAL_GPIO_DIR_OUTPUT, CYHAL_GPIO_DRIVE_STRONG, LED_STATE_OFF);
+    result = cyhal_gpio_init(LED_RGB_GREEN, CYHAL_GPIO_DIR_OUTPUT, CYHAL_GPIO_DRIVE_STRONG, LED_STATE_ON);
     if (result != CY_RSLT_SUCCESS)
     {
         CY_ASSERT(0);

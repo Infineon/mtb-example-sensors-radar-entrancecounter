@@ -5,7 +5,7 @@
 ** for entrance counter application.
 **
 ** ===========================================================================
-** Copyright (C) 2021 Infineon Technologies AG. All rights reserved.
+** Copyright (C) 2022 Infineon Technologies AG. All rights reserved.
 ** ===========================================================================
 **
 ** ===========================================================================
@@ -260,95 +260,95 @@ void radar_counter_terminal_ui(cy_thread_arg_t arg)
 
     terminal_ui_menu();
 
-    /* Check if a key was pressed */
-    while (cyhal_uart_getc(&cy_retarget_io_uart_obj, &rx_value, 0) == CY_RSLT_SUCCESS)
+    for (;;)
     {
-        switch ((char)rx_value)
+        /* Check if a key was pressed */
+        if (cyhal_uart_getc(&cy_retarget_io_uart_obj, &rx_value, 0) == CY_RSLT_SUCCESS)
         {
-            // menu
-            case '?':
-                terminal_ui_menu();
-                break;
-            case 'i':
+            switch ((char)rx_value)
             {
-                printf("Select counter installation:\n");
-                char *counter_choices[] = {"ceiling", "side"};
-                selected_option = terminal_ui_getselection(&cy_retarget_io_uart_obj,
-                                                        counter_choices,
-                                                        sizeof(counter_choices) / sizeof(char *));
-                if (selected_option != NULL)
+                // menu
+                case '?':
+                    terminal_ui_menu();
+                    break;
+                case 'i':
                 {
-                    terminal_ui_print_result(mtb_radar_sensing_set_parameter(&sensing_context,
-                                                                            "radar_counter_installation",
-                                                                            selected_option));
+                    printf("Select counter installation:\n");
+                    char *counter_choices[] = {"ceiling", "side"};
+                    selected_option = terminal_ui_getselection(&cy_retarget_io_uart_obj,
+                                                               counter_choices,
+                                                               sizeof(counter_choices) / sizeof(char *));
+                    if (selected_option != NULL)
+                    {
+                        terminal_ui_print_result(mtb_radar_sensing_set_parameter(&sensing_context,
+                                                                                 "radar_counter_installation",
+                                                                                 selected_option));
+                    }
+                    break;
                 }
-                break;
-            }
-            case 'o':
-            {
-                printf("Select counter orientation:\n");
-                char *orientation_choices[] = {"landscape", "portrait"};
-                selected_option = terminal_ui_getselection(&cy_retarget_io_uart_obj,
-                                                        orientation_choices,
-                                                        sizeof(orientation_choices) / sizeof(char *));
-                if (selected_option != NULL)
+                case 'o':
                 {
-                    terminal_ui_print_result(mtb_radar_sensing_set_parameter(&sensing_context,
-                                                                            "radar_counter_orientation",
-                                                                            selected_option));
+                    printf("Select counter orientation:\n");
+                    char *orientation_choices[] = {"landscape", "portrait"};
+                    selected_option = terminal_ui_getselection(&cy_retarget_io_uart_obj,
+                                                               orientation_choices,
+                                                               sizeof(orientation_choices) / sizeof(char *));
+                    if (selected_option != NULL)
+                    {
+                        terminal_ui_print_result(mtb_radar_sensing_set_parameter(&sensing_context,
+                                                                                 "radar_counter_orientation",
+                                                                                 selected_option));
+                    }
+                    break;
                 }
-                break;
-            }
-            case 'h':
-                printf("Enter counter ceiling height [0.0-3.0]m, press enter\n");
-                terminal_ui_readline(&cy_retarget_io_uart_obj, value, IFX_RADAR_SENSING_VALUE_MAXLENGTH);
-                terminal_ui_print_result(
-                    mtb_radar_sensing_set_parameter(&sensing_context, "radar_counter_ceiling_height", value));
-                break;
-            case 'w':
-                printf("Enter counter entrance width [0.0-3.0]m, press enter\n");
-                terminal_ui_readline(&cy_retarget_io_uart_obj, value, IFX_RADAR_SENSING_VALUE_MAXLENGTH);
-                terminal_ui_print_result(
-                    mtb_radar_sensing_set_parameter(&sensing_context, "radar_counter_entrance_width", value));
-                break;
-            case 's':
-                printf("Set sensitivity: [0.0 - 1.0]\n");
-                terminal_ui_readline(&cy_retarget_io_uart_obj, value, IFX_RADAR_SENSING_VALUE_MAXLENGTH);
-                terminal_ui_print_result(
-                    mtb_radar_sensing_set_parameter(&sensing_context, "radar_counter_sensitivity", value));
-                break;
-            case 't':
-                printf("Enter counter traffic light zone [0.0-1.0]m, press enter\n");
-                terminal_ui_readline(&cy_retarget_io_uart_obj, value, IFX_RADAR_SENSING_VALUE_MAXLENGTH);
-                terminal_ui_print_result(
-                    mtb_radar_sensing_set_parameter(&sensing_context, "radar_counter_traffic_light_zone", value));
-                break;
-            case 'r':
-            {
-                printf("Select counter reverse:\n");
-                char *reverse_choices[] = {"true", "false"};
-                char *selected = terminal_ui_getselection(&cy_retarget_io_uart_obj,
-                                                        reverse_choices,
-                                                        sizeof(reverse_choices) / sizeof(char *));
-                if (selected != NULL)
-                {
+                case 'h':
+                    printf("Enter counter ceiling height [0.0-3.0]m, press enter\n");
+                    terminal_ui_readline(&cy_retarget_io_uart_obj, value, IFX_RADAR_SENSING_VALUE_MAXLENGTH);
                     terminal_ui_print_result(
-                        mtb_radar_sensing_set_parameter(&sensing_context, "radar_counter_reverse", selected));
+                        mtb_radar_sensing_set_parameter(&sensing_context, "radar_counter_ceiling_height", value));
+                    break;
+                case 'w':
+                    printf("Enter counter entrance width [0.0-3.0]m, press enter\n");
+                    terminal_ui_readline(&cy_retarget_io_uart_obj, value, IFX_RADAR_SENSING_VALUE_MAXLENGTH);
+                    terminal_ui_print_result(
+                        mtb_radar_sensing_set_parameter(&sensing_context, "radar_counter_entrance_width", value));
+                    break;
+                case 's':
+                    printf("Set sensitivity: [0.0 - 1.0]\n");
+                    terminal_ui_readline(&cy_retarget_io_uart_obj, value, IFX_RADAR_SENSING_VALUE_MAXLENGTH);
+                    terminal_ui_print_result(
+                        mtb_radar_sensing_set_parameter(&sensing_context, "radar_counter_sensitivity", value));
+                    break;
+                case 't':
+                    printf("Enter counter traffic light zone [0.0-1.0]m, press enter\n");
+                    terminal_ui_readline(&cy_retarget_io_uart_obj, value, IFX_RADAR_SENSING_VALUE_MAXLENGTH);
+                    terminal_ui_print_result(
+                        mtb_radar_sensing_set_parameter(&sensing_context, "radar_counter_traffic_light_zone", value));
+                    break;
+                case 'r':
+                {
+                    printf("Select counter reverse:\n");
+                    char *reverse_choices[] = {"true", "false"};
+                    char *selected = terminal_ui_getselection(&cy_retarget_io_uart_obj,
+                                                              reverse_choices,
+                                                              sizeof(reverse_choices) / sizeof(char *));
+                    if (selected != NULL)
+                    {
+                        terminal_ui_print_result(
+                            mtb_radar_sensing_set_parameter(&sensing_context, "radar_counter_reverse", selected));
+                    }
+                    break;
                 }
-                break;
+                case 'm':
+                    printf("Enter counter min person height [0.0-2.0]m, press enter\n");
+                    terminal_ui_readline(&cy_retarget_io_uart_obj, value, IFX_RADAR_SENSING_VALUE_MAXLENGTH);
+                    terminal_ui_print_result(
+                        mtb_radar_sensing_set_parameter(&sensing_context, "radar_counter_min_person_height", value));
+                    break;
+                default:
+                    terminal_ui_info();
             }
-            case 'm':
-                printf("Enter counter min person height [0.0-2.0]m, press enter\n");
-                terminal_ui_readline(&cy_retarget_io_uart_obj, value, IFX_RADAR_SENSING_VALUE_MAXLENGTH);
-                terminal_ui_print_result(
-                    mtb_radar_sensing_set_parameter(&sensing_context, "radar_counter_min_person_height", value));
-                break;
-            default:
-                terminal_ui_info();
+            rx_value = 0;
         }
-        rx_value = 0;
     }
-    printf("Exiting terminal ui\n");
-    /* Exit current thread (suspend) */
-    (void)cy_rtos_exit_thread();
 }
